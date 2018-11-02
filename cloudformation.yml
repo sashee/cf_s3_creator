@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  S3FileLambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Handler: handler.index
+      Role: !GetAtt S3FileLambdaExecutionRole.Arn
+      Code: s3_file/
+      Runtime: nodejs8.10
+  S3FileLambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Policies:
+      - PolicyName: allow-logs
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - 'logs:*'
+            Resource: arn:aws:logs:*:*:*
+      - PolicyName: s3-bucket
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - 's3:PutObject'
+            - 's3:GetObject'
+            - 's3:DeleteObject'
+            Resource:
+            - '*'
+Outputs:
+  S3FileLambdaFunction:
+    Value: !GetAtt S3FileLambdaFunction.Arn
