@@ -40,5 +40,5 @@ Resources:
             Resource:
             - '*'
 Outputs:
-  S3FileLambdaFunction:
+  Arn:
     Value: !GetAtt S3FileLambdaFunction.Arn
