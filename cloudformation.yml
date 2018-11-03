@@ -1,4 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  Buckets:
+    Type: CommaDelimitedList
 Resources:
   S3FileLambdaFunction:
     Type: AWS::Lambda::Function
@@ -37,8 +40,7 @@ Resources:
             - 's3:PutObject'
             - 's3:GetObject'
             - 's3:DeleteObject'
-            Resource:
-            - '*'
+            Resource: !Ref Buckets
 Outputs:
   Arn:
     Value: !GetAtt S3FileLambdaFunction.Arn
