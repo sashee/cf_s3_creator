@@ -27,5 +27,5 @@ Resources:
 And build with:
 
 ```
-mkdir -p .tmp && cat cloudformation.yml | sed -r 's@(.*)(!!Custom )(.*)@echo "\1$(\3)"@ge'> .proc.yml && aws cloudformation package --template-file .proc.yml --s3-bucket <bucket> --output-template-file .tmp/output.yml && aws cloudformation deploy --template-file .tmp/output.yml --stack-name <stackname> --capabilities CAPABILITY_IAM && rm .proc.yml && rm -rf .tmp
+deploy() { mkdir -p .tmp && cat cloudformation.yml | sed -r 's@(.*)(!!Custom )(.*)@echo "\1$(\3)"@ge'> .proc.yml && aws cloudformation package --template-file .proc.yml --s3-bucket $1 --output-template-file .tmp/output.yml && aws cloudformation deploy --template-file .tmp/output.yml --stack-name $2 --capabilities CAPABILITY_IAM && rm .proc.yml && rm -rf .tmp ; }; deploy <bucket> <stackname>
 ```
